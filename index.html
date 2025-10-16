@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rekap Penilaian Siswa – MTsT Daarut Tahfizh Al - Ikhlas</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <header class="header card">
+      <div class="title title-stack">
+        <h1 id="schoolTitle">MTsT Daarut Tahfizh Al - Ikhlas</h1>
+        <h2 id="pageSubtitle">Rekap Penilaian Siswa</h2>
+        <p id="subjectLine">Mata Pelajaran <strong>Bahasa Inggris</strong></p>
+        <p id="teacherLine">Teacher: <strong>Ahmad Zaman Huri, S.Pd.</strong></p>
+      </div>
+      <div class="controls">
+        <button id="btnMode" class="btn primary">Masuk Mode Guru</button>
+        <button id="btnExportJSON" class="btn">Ekspor JSON</button>
+        <label class="btn outline">
+          Impor JSON
+          <input id="importJSON" type="file" accept="application/json" hidden />
+        </label>
+      </div>
+    </header>
+
+    <!-- Meta ringkas -->
+    <section class="meta card">
+      <div class="grid">
+        <div>
+          <label>Tahun Ajaran</label>
+          <select id="academicYear">
+            <option selected>2025/2026</option>
+          </select>
+        </div>
+        <div>
+          <label>Semester</label>
+          <select id="semester">
+            <option selected>Ganjil</option>
+            <option>Genap</option>
+          </select>
+        </div>
+        <div>
+          <label>Mapel</label>
+          <input id="subjectName" value="Bahasa Inggris" readonly />
+        </div>
+        <div>
+          <label>Kelas</label>
+          <select id="classSelect"></select>
+        </div>
+
+        <!-- Ringkasan info -->
+        <div style="grid-column:1/-1;display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:12px;color:#445">
+          <span>Sekolah: <strong id="metaSchool">MTsT Daarut Tahfizh Al - Ikhlas</strong></span>
+          <span>Guru: <strong id="metaTeacher">Ahmad Zaman Huri, S.Pd.</strong></span>
+          <span>Mapel: <strong id="metaSubject">Bahasa Inggris</strong></span>
+          <span>Tahun: <strong id="metaYear">2025/2026</strong></span>
+          <span>Semester: <strong id="metaSemester">Ganjil</strong></span>
+          <span>Kelas Aktif: <strong id="activeClassName">-</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button data-tab="pengetahuan" class="tab active">Pengetahuan</button>
+      <button data-tab="keterampilan" class="tab">Keterampilan</button>
+      <button data-tab="sikap" class="tab">Sikap & Karakter</button>
+      <button data-tab="remedial" class="tab">Remedial</button>
+    </nav>
+
+    <!-- Panels -->
+    <main>
+      <section id="tab-pengetahuan" class="panel card"></section>
+      <section id="tab-keterampilan" class="panel card hidden"></section>
+      <section id="tab-sikap" class="panel card hidden"></section>
+      <section id="tab-remedial" class="panel card hidden"></section>
+    </main>
+
+    <footer class="footer">
+      Designed by <strong>Ahmad Zaman Huri</strong>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/pengetahuan.js"></script>
+  <script src="js/keterampilan.js"></script>
+  <script src="js/sikap.js"></script>
+  <script src="js/remedial.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

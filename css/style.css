@@ -1,0 +1,192 @@
+:root{
+  --primary:#244626;
+  --primary-600:#2c5130;
+  --primary-700:#2F5A3A;
+  --primary-800:#254731;
+  --tint:#EEF4F0;
+  --paper:#FFFFFF;
+  --paper-tint:#F8FBF9;
+  --border:#D3E1D8;
+  --border-strong:#bfd0c5;
+  --text:#1F2937;
+  --muted:#5a6b61;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 6px 18px rgba(21,45,33,.10);
+  --radius:16px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;color:var(--text);font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto}
+body{
+  background:
+    radial-gradient(1200px 600px at 20% -10%, #ffffff 0%, transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, #f3f8f5 0%, transparent 55%),
+    linear-gradient(180deg, var(--tint), #e9f1ec);
+}
+
+/* ===== Layout dasar ===== */
+.wrap{max-width:1200px;margin:0 auto;padding:20px}
+.hidden{display:none!important}
+
+/* ===== Kartu umum ===== */
+.card{
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:var(--shadow-sm);
+}
+
+/* ===== Header ===== */
+.header{
+  display:flex;gap:16px;align-items:flex-start;justify-content:space-between;
+  background:
+    radial-gradient(600px 240px at 0% 0%, rgba(36,70,38,.06), transparent 70%),
+    var(--paper);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-md);
+}
+.title-stack h1{margin:0 0 6px;font-size:28px;color:var(--primary);font-weight:800}
+.title-stack h2{margin:0 0 4px;font-size:18px;color:var(--primary-700);font-weight:700}
+.title-stack p{margin:0;color:var(--muted)}
+.title-stack p strong{font-weight:700}
+
+/* ===== Kontrol ===== */
+.controls{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:12px;
+  padding:9px 14px;
+  cursor:pointer;
+  transition:all .18s ease;
+  box-shadow:var(--shadow-sm);
+}
+.btn:hover{border-color:var(--primary-600);transform:translateY(-1px)}
+.btn.primary{
+  background:linear-gradient(180deg, var(--primary-700), var(--primary));
+  color:#fff;border-color:var(--primary-700);
+}
+.btn.primary:hover{background:linear-gradient(180deg, var(--primary-800), var(--primary-700))}
+.btn.outline{background:transparent;color:var(--primary);border-color:var(--primary-600)}
+
+/* ===== Meta ===== */
+.meta .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.meta input,.meta select{
+  width:100%;padding:10px 12px;border:1px solid var(--border);
+  border-radius:12px;background:#fff;outline:none;
+  transition:border-color .18s ease, box-shadow .18s ease;
+}
+.meta input:focus,.meta select:focus{
+  border-color:var(--primary-600);
+  box-shadow:0 0 0 3px rgba(36,70,38,.15);
+}
+
+/* ===== Tabs ===== */
+.tabs{display:flex;gap:10px;margin:16px 0}
+.tab{
+  padding:10px 14px;border-radius:12px;border:1px solid var(--border);
+  background:var(--paper-tint);color:var(--primary);cursor:pointer;
+  transition:all .18s ease;font-weight:600;
+}
+.tab:hover{background:var(--primary-700);color:#fff;border-color:var(--primary-700);transform:translateY(-1px)}
+.tab.active{background:linear-gradient(180deg, var(--primary-700), var(--primary));color:#fff;border-color:var(--primary);box-shadow:var(--shadow-sm)}
+
+/* ===== Panel ===== */
+.panel{padding:14px;background:var(--paper);border:1px solid var(--border);border-radius:var(--radius)}
+
+/* ===== Tabel ===== */
+.table-wrap{
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--paper);
+  box-shadow:var(--shadow-sm);
+}
+.table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.table th,.table td{padding:10px 10px;vertical-align:middle;border-bottom:1px solid var(--border);word-wrap:break-word}
+
+/* Header tabel hijau */
+.table thead th{
+  background:linear-gradient(180deg, var(--primary-700), var(--primary));
+  color:#fff;font-weight:700;border-bottom:1px solid var(--primary-700);
+}
+.table thead tr:first-child th:first-child{border-top-left-radius:10px}
+.table thead tr:first-child th:last-child{border-top-right-radius:10px}
+
+/* Zebra & hover */
+.table tbody tr:nth-child(odd) td{background:#f6fbf8}
+.table tbody tr:hover td{background:#f1f7f3}
+
+/* Lebar kolom tetap */
+.table th:nth-child(1),.table td:nth-child(1){width:54px;text-align:center}
+.table th:nth-child(2),.table td:nth-child(2){width:280px}
+
+/* Editable */
+.table td.editable{cursor:pointer;position:relative}
+.table td.editable:hover{background:#ecf5ef;box-shadow:inset 0 0 0 1px var(--primary-600)}
+.table td.bad{color:#b42318;font-weight:700}
+
+/* Panel head/foot */
+.panel-head{padding:12px 12px 8px}
+.panel-foot{padding:10px 12px 0}
+
+/* ========= PEMISAH KHUSUS ========= */
+
+/* a) Garis setelah kolom “Nama” untuk SEMUA tabel */
+.table thead tr:first-child th:nth-child(2),
+.table tbody td:nth-child(2){
+  border-right:2px solid var(--border-strong);
+}
+
+/* b) Garis antar BAB/KD */
+.table.sep-3 thead tr:nth-child(2) th:nth-child(3n){
+  border-right:2px solid var(--border-strong);
+}
+.table.sep-3 tbody td:nth-child(3n + 5){
+  border-right:2px solid var(--border-strong);
+}
+.table.sep-3 thead tr:first-child th[colspan]{
+  border-right:2px solid var(--border-strong);
+}
+
+/* c) Garis antara PTS & RPH (khusus tab Pengetahuan) */
+.table-pengetahuan thead tr:first-child th:nth-last-child(2),
+.table-pengetahuan tbody td:nth-last-child(2){
+  border-right:2px solid var(--border-strong);
+}
+
+/* d) Remedial: semua kolom punya pemisah */
+.table.sep-all thead th + th,
+.table.sep-all tbody td + td{
+  border-left:1px solid var(--border-strong);
+}
+
+/* ===== Util ===== */
+.center{ text-align:center; }
+.icon-btn{
+  font:inherit; line-height:1; border:1px solid var(--border);
+  background:#fff; border-radius:8px; padding:4px 8px; cursor:pointer;
+  margin-left:6px; transform:translateY(-1px);
+}
+.icon-btn:hover{ border-color:var(--primary-600); background:#f4faf6 }
+
+/* ===== Footer ===== */
+.footer{margin:24px 0 12px;color:#667;font-size:12px;text-align:center}
+
+/* ===== Responsif ===== */
+@media (max-width:900px){
+  .meta .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .table th:nth-child(2),.table td:nth-child(2){width:auto}
+}
+@media (max-width:560px){
+  .meta .grid{grid-template-columns:1fr}
+}
+
+/* ===== Print ===== */
+@media print{
+  .btn,.tabs,.meta .grid select,.meta .grid input{display:none!important}
+  body{background:#fff}
+  .card{border-color:#999;box-shadow:none}
+  .table thead th{background:#2F5A3A !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
