@@ -3,7 +3,7 @@
    ========================================================================= */
 
 const GOOGLE_CLIENT_ID = "435459939699-iar3gdsl2kuc256u3lhaq0glrsu3kpqe.apps.googleusercontent.com";   // <-- milikmu
-const GOOGLE_API_KEY   = "AIzaSyDWGAbIKD3cuO2wGkNpj5CEb3PIBx9k6-k";                                     // <-- milikmu
+const GOOGLE_API_KEY   = "AIzaSyAOu1vFiAwcC1EilYB8bZxXb_WdISKoDaw";                                     // <-- milikmu
 
 const DRIVE_FILE_NAME = "project-monitoring-siswa-data.json";
 const LS_FILE_ID_KEY  = "pms_drive_file_id";
@@ -221,4 +221,5 @@ async function autoLoadPublicData(){
     setChip("Auto-loaded", "ready");
   }catch(e){ /* ignore */ }
 }
+
 
