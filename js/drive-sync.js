@@ -2,8 +2,8 @@
    Google Drive Sync (with status chip) — defensive build
    ========================================================================= */
 
-const GOOGLE_CLIENT_ID = "435459939699-iar3gdsl2kuc256u3lhaq0glrsu3kpqe.apps.googleusercontent.com";   // <-- milikmu
-const GOOGLE_API_KEY   = "AIzaSyAOu1vFiAwcC1EilYB8bZxXb_WdISKoDaw";                                     // <-- milikmu
+const GOOGLE_CLIENT_ID = CONFIG.CLIENT_ID;
+const GOOGLE_API_KEY   = CONFIG.API_KEY;
 
 const DRIVE_FILE_NAME = "project-monitoring-siswa-data.json";
 const LS_FILE_ID_KEY  = "pms_drive_file_id";
@@ -221,5 +221,6 @@ async function autoLoadPublicData(){
     setChip("Auto-loaded", "ready");
   }catch(e){ /* ignore */ }
 }
+
 
 
