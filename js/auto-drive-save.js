@@ -1,50 +1,108 @@
 // js/auto-drive-save.js
-// Auto-upload ke Google Drive saat KELUAR dari Mode Guru
+// Fitur: 
+// 1) Auto-upload saat KELUAR Mode Guru
+// 2) Auto-save setiap 30 detik KETIKA Mode Guru aktif
+// 3) Save manual tetap berfungsi
 
 (function () {
-  function findBtn() {
-    return document.getElementById('btnMode');
-  }
+  // ====== Konfigurasi ======
+  const AUTOSAVE_MS = 30000;                   // tiap 30 detik
+  const LS_APP_KEY = (window.LS_APP_KEY) || 'penilaianAppV2';
+
+  // ====== State ======
+  let autosaveTimer = null;
+  let lastUploadedStr = null;                  // untuk deteksi perubahan
+  let isSaving = false;                        // guard agar tak tumpang tindih
+
+  // ====== Util ======
+  function $(id) { return document.getElementById(id); }
+  function getBtn() { return $('btnMode'); }
   function isInGuruMode(btn) {
-    // Di app kamu: saat sedang di Mode Guru, teks tombol = "Keluar Mode Guru"
-    // Jadi kalau mengandung 'keluar' berarti SEDANG di guru mode.
+    // Saat SEDANG di Mode Guru, teks tombol jadi "Keluar Mode Guru"
     return btn && btn.textContent.toLowerCase().includes('keluar');
   }
+  function readLocalStr() {
+    try { return localStorage.getItem(LS_APP_KEY) || '{}'; }
+    catch (_) { return '{}'; }
+  }
+  async function saveNow(manual=false) {
+    if (typeof window.driveSave !== 'function') return;
+    if (isSaving) return;          // cegah overlap
+    isSaving = true;
+    try {
+      await window.driveSave({ manual });
+      // anggap sukses → catat snapshot terakhir yang sudah diupload
+      lastUploadedStr = readLocalStr();
+    } catch (_) {
+      // kalau gagal, biarkan; interval nanti akan coba lagi
+    } finally {
+      isSaving = false;
+    }
+  }
 
-  function init() {
-    const btn = findBtn();
+  // ====== Auto-save interval (saat MODE GURU) ======
+  function startAutosave() {
+    if (autosaveTimer) return; // sudah jalan
+    // catat state awal agar tidak upload langsung bila belum ada perubahan
+    lastUploadedStr = readLocalStr();
+
+    autosaveTimer = setInterval(async () => {
+      const btn = getBtn();
+      if (!isInGuruMode(btn)) return;     // hanya ketika mode guru aktif
+      const current = readLocalStr();
+      if (current !== lastUploadedStr) {
+        // ada perubahan → simpan (tanpa pop-up alert)
+        await saveNow(false);
+      }
+    }, AUTOSAVE_MS);
+  }
+
+  function stopAutosave() {
+    if (autosaveTimer) {
+      clearInterval(autosaveTimer);
+      autosaveTimer = null;
+    }
+  }
+
+  // ====== Hook tombol Mode Guru ======
+  function wireBtn() {
+    const btn = getBtn();
     if (!btn) return;
 
     btn.addEventListener('click', () => {
-      // Jika sebelum klik ini tombol bertuliskan "Keluar Mode Guru",
-      // artinya kita SEDANG di guru mode -> klik ini = KELUAR dari mode guru.
+      // Jika sebelum klik sedang di mode guru → berarti kita AKAN KELUAR
       const leavingGuru = isInGuruMode(btn);
       if (leavingGuru) {
-        // Beri sedikit jeda agar UI selesai menyimpan ke localStorage,
-        // baru kemudian upload ke Drive.
+        // Hentikan timer & lakukan save sekali saat keluar
+        stopAutosave();
+        setTimeout(() => saveNow(true), 150);
+      } else {
+        // Kita AKAN MASUK Mode Guru → mulai autosave setelah teks tombol berubah
         setTimeout(() => {
-          if (typeof window.driveSave === 'function') {
-            // manual:true = tampilkan alert/feedback sesuai implementasi kamu
-            window.driveSave({ manual: true });
-          }
-        }, 150);
+          const b = getBtn();
+          if (isInGuruMode(b)) startAutosave();
+        }, 120);
       }
     });
 
-    // (Opsional) Jika tab ditutup saat masih di Mode Guru, kita tetap coba upload.
-    // Perlu diingat: beforeunload tidak selalu memberi waktu untuk network,
-    // jadi ini "best effort" saja. Simpanan utamanya terjadi saat tombol ditekan.
+    // Jika saat halaman pertama kali dibuka sudah di Mode Guru (jarang),
+    // aktifkan autosave langsung.
+    if (isInGuruMode(btn)) startAutosave();
+
+    // Best-effort: jika tab ditutup saat masih di mode guru, coba simpan.
     window.addEventListener('beforeunload', () => {
-      const b = findBtn();
-      if (isInGuruMode(b) && typeof window.driveSave === 'function') {
-        try { window.driveSave({ manual: false }); } catch (_) {}
+      const b = getBtn();
+      if (isInGuruMode(b)) {
+        // Tidak dijamin selesai oleh browser, tapi tidak ada ruginya mencoba.
+        try { navigator.sendBeacon && saveNow(false); } catch(_) {}
       }
     });
   }
 
+  // ====== Init ======
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', wireBtn);
   } else {
-    init();
+    wireBtn();
   }
 })();
